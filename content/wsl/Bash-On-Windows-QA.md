@@ -1,3 +1,9 @@
+---
+title: "Bash-On-Windows问题汇总"
+layout: page
+date: 2016-08-10 09:00
+---
+
 ### sudo 出现 unable to resolve host
 /etc/hosts中 添加 127.0.0.1与主机名的映射,eg:
 127.0.0.1   dev

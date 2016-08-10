@@ -1,3 +1,9 @@
+---
+title: "ngxin https双向认证及tomcat https单向认证"
+layout: page
+date: 2016-08-10 09:00
+---
+
 # ngxin https双向认证及tomcat https单向认证
 - - - - 
 `nginx` 挂在公网上，可以通过[let's encrypt](https://letsencrypt.org) 申请免费证书；

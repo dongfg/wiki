@@ -1,4 +1,9 @@
-centos7 服务器初始化脚本：
+---
+title: "Centos7 服务器初始化脚本"
+layout: page
+date: 2016-08-10 09:00
+---
+
 ```shell
 # time
 timedatectl set-timezone Asia/Shanghai
