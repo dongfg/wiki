@@ -12,7 +12,6 @@ after_success:
   - openssl aes-256-cbc -K $encrypted_ec35d56f228d_key -iv $encrypted_ec35d56f228d_iv
     -in deploy_rsa.enc -out /tmp/deploy_rsa -d
   - eval "$(ssh-agent -s)"
-  - cat /tmp/deploy_rsa
   - chmod 600 /tmp/deploy_rsa
   - ssh-add /tmp/deploy_rsa
   - git config user.name "travis-ci"
@@ -20,4 +19,4 @@ after_success:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet output ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}
+  script: rsync -e 'ssh -p ${DEPLOY_PORT}' -r --delete-after --quiet output ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}
