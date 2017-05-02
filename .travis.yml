@@ -20,4 +20,4 @@ after_success:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -e 'ssh -p ${DEPLOY_PORT}' -r --delete-after --quiet output ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}
+  script: rsync -avzrtopg -e 'ssh -p ${DEPLOY_PORT}' output/ ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}
