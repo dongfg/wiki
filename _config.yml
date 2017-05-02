@@ -8,8 +8,3 @@ description:
 author: Dongfg
 
 theme: yasimple_x2
-deploy:
-  - type: rsync
-    user: develop
-    host: aliyun
-    dir: /home/develop/www/dongfg/wiki
