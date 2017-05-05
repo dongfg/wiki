@@ -25,4 +25,5 @@ deploy:
     skip_cleanup: true
     script: rsync -avzrtopg -e 'ssh -p ${DEPLOY_PORT}' output/ ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}
   - provider: script
+    skip_cleanup: true
     script: python qiniu_rsync.py ${QINIU_AK} ${QINIU_SK} ${QINIU_BUCKET_NAME} output
