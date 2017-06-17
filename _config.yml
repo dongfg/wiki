@@ -13,3 +13,5 @@ category:
     label: Linux/运维
   - name: database
     label: 数据库
+  - name: base
+    label: 基础
