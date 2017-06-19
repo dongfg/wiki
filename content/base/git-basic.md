@@ -38,4 +38,6 @@ git push origin --delete v1.2.0
 
 [史上最浅显易懂的Git教程](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
 
+[Got 15 minutes and want to learn Git?](https://try.github.io/levels/1/challenges/1)
+
 [闯过这 54 关，点亮你的 Git 技能树](https://github.com/Gazler/githug)
