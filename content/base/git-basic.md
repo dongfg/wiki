@@ -19,16 +19,19 @@ git add README.MD
 git commit -m "add readme"
 git push origin master
 ```
-### 创建分支
-
-git branch 
-
-### 切换分支
-
-### 合并分支
-
+### 创建/切换分支
+```
+git checkout -b v1.2.0
+```
+### 合并(Merge)分支
+```
+git checkout
+```
 ### 删除分支
-
+```
+git branch -D v1.2.0
+git push origin --delete v1.2.0
+```
 ## 附录
 ### Git资料参考
 [猴子都能懂的Git入门](http://backlogtool.com/git-guide/cn/)
