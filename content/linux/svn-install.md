@@ -1,6 +1,7 @@
 ---
 title: "SVN服务器搭建"
 date:  2016-12-12 15:12
+updated: 2017-08-16 13:53
 tag: 
     - svn
 ---
@@ -29,22 +30,26 @@ yum install php
 
 # https://github.com/mfreiholz/iF.SVNAdmin
 # 假设安装在/opt/svnadmin目录
+chown -R apache: /opt/svnadmin
 ```
 
 ## 配置
 ### 1. 创建SVN仓库存放的目录，eg : /opt/svnrepo
 ```
 mkdir /opt/svnrepo
+chown -R apache: /opt/svnrepo
 ```
 
 ### 2. 创建SVN系统管理员
 ```
 htpasswd -cm /etc/svn-auth-users svnadmin
+chown apache: /etc/svn-auth-users
 ```
 
 ### 3. 创建权限控制文件
 ```
 # touch /etc/svn-acl-conf
+# chown apache: /etc/svn-acl-conf
 [/]
 *=r
 ```
