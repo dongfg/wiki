@@ -15,3 +15,5 @@ category:
     label: 数据库
   - name: base
     label: 基础
+  - name: java
+    label: Java
