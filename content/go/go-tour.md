@@ -3,7 +3,7 @@ title: Go 指南
 date: 2018-01-13 09:47:55
 tag: Go,markdown
 ---
-> 原文内容来自 (Go 指南)[https://tour.go-zh.org]
+> 原文内容来自 [Go 指南](https://tour.go-zh.org)
 
 ## 基础
 ### 包、变量和函数
