@@ -1,6 +1,7 @@
 ---
 title: IDEA 设置
 date: 2018-01-27 11:00:00
+updated: 2018-03-21 14:38
 ---
 [TOC]
 ## 启动前
@@ -17,9 +18,12 @@ date: 2018-01-27 11:00:00
 - lombok
 - Alibaba Java Coding Guidelines
 
+## FiraCode
+安装 https://github.com/tonsky/FiraCode 字体
+
 ## 全局设置
 - UI 字体 加大
-- editor 字体 16 Source Code Pro
+- editor 字体 16 Fira Code,fallback Source Code Pro
 - reopen 关闭
 - encoding utf-8
 - maven 使用本地maven，配置settings文件
