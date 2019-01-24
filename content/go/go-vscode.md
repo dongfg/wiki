@@ -13,7 +13,7 @@ export PATH=$PATH:$(go env GOPATH)/bin
 
 ### 安装Go插件
 [marketplace 安装](vscode:extension/ms-vscode.Go)
-设置 http_proxy
+设置，搜索 `http: Proxy`，设置为 `http://127.0.0.1:1087`
 
 ### 安装依赖
 `cmd + shift + p -> Install/Update Tools`
