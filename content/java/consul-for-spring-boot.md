@@ -61,6 +61,8 @@ https://learn.hashicorp.com/consul/advanced/day-1-operations/acl-guide
 |Agent|write all|read all|read all|
 |KV数据管理|read all|read all|write all|
 |单个微服务|read all|read all, write self|read self(config/appName\[,env\]/data)|
+
+
 > 样例：
 > - read all: node_prefix "" { policy = "read" }, service_prefix "" { policy = "read" }
 > - write all: node_prefix "" { policy = "write" }, service_prefix "" { policy = "write" }
