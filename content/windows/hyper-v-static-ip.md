@@ -1,6 +1,7 @@
 ---
 title: Hyper-V 虚拟机静态IP
 date: 2019-04-17 08:34:28
+draft: true
 ---
 
 ## Hyper-V Switch 配置
