@@ -6,7 +6,7 @@ title: dongfg' wiki
 keywords: java, python, linux, docker, wiki, simiki
 description: dongfg' personal wiki
 author: <a href='https://dongfg.com'>dongfg</a>
-theme: yasimple_x2 
+theme: yasimple_x2
 
 category:
   - name: linux
@@ -17,3 +17,5 @@ category:
     label: 基础
   - name: java
     label: Java
+  - name: windows
+    label: Windows
