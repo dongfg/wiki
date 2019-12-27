@@ -11,6 +11,8 @@ theme: yasimple_x2
 category:
   - name: linux
     label: Linux/运维
+  - name: devops
+    label: DevOps
   - name: database
     label: 数据库
   - name: base
