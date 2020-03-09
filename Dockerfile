@@ -1,4 +1,4 @@
-FROM python:2-alpine AS builder
+FROM python:alpine AS builder
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 ENV TZ=Asia/Shanghai
