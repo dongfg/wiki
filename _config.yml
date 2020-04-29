@@ -21,3 +21,5 @@ category:
     label: Java
   - name: windows
     label: Windows
+  - name: network
+    label: 网络
