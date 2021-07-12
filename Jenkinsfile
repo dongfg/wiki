@@ -37,7 +37,7 @@ EOF
     stage('同步') {
       steps {
         sh '''
-            ossutil sync output/ oss://dongfg-wiki/
+            ossutil sync output/ oss://dongfg-wiki/ --delete --force
         '''
       }
     }
