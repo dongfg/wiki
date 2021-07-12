@@ -35,6 +35,7 @@ accessKeySecret=${Ali_Secret}" &> $HOME/.ossutilconfig
     stage('同步') {
       steps {
         sh '''
+            cat $HOME/.ossutilconfig
             ls -l output
             ossutil ls
         '''
