@@ -13,12 +13,13 @@ pipeline {
       }
     }
 
-    stage('安装依赖') {
+    stage('构建') {
       steps {
         sh '''
-            python -V
+            pip -V
             pip install simiki
-            wget http://gosspublic.alicdn.com/ossutil/1.7.3/ossutil64 -O /usr/local/bin/ossutil
+            simiki g
+            wget -q http://gosspublic.alicdn.com/ossutil/1.7.3/ossutil64 -O /usr/local/bin/ossutil
             chmod 0755 /usr/local/bin/ossutil
         '''
         withCredentials([cloudApi(credentialsId: '38adbfce-ef65-4778-8b28-bf35bdd33ce9', secretIdVariable: 'Ali_Key', secretKeyVariable: 'Ali_Secret')]) {
@@ -30,13 +31,9 @@ pipeline {
                 accessKeyID=${Ali_Key}
                 accessKeySecret=${Ali_Secret}
                 EOF
+                cat $HOME/.ossutilconfig
             '''
         }
-      }
-    }
-    stage('构建') {
-      steps {
-        sh 'simiki g'
       }
     }
     stage('同步') {
