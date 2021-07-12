@@ -23,11 +23,13 @@ pipeline {
         '''
         withCredentials([cloudApi(credentialsId: '38adbfce-ef65-4778-8b28-bf35bdd33ce9', secretIdVariable: 'Ali_Key', secretKeyVariable: 'Ali_Secret')]) {
             sh '''
-echo "[Credentials]
+tee $HOME/.ossutilconfig > /dev/null <<EOF
+[Credentials]
 language=CH
 endpoint=oss-cn-hangzhou.aliyuncs.com
 accessKeyID=${Ali_Key}
-accessKeySecret=${Ali_Secret}" &> $HOME/.ossutilconfig
+accessKeySecret=${Ali_Secret}
+EOF
             '''
         }
       }
@@ -35,7 +37,7 @@ accessKeySecret=${Ali_Secret}" &> $HOME/.ossutilconfig
     stage('同步') {
       steps {
         sh '''
-            cat $HOME/.ossutilconfig
+            ls -l $HOME/.ossutilconfig
             ls -l output
             ossutil ls
         '''
