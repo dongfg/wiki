@@ -21,7 +21,7 @@ pipeline {
             wget http://gosspublic.alicdn.com/ossutil/1.7.3/ossutil64 -O /usr/local/bin/ossutil
             chmod 0755 /usr/local/bin/ossutil
         '''
-        withCredentials([cloudApi(credentialsId: 'ca25bc86-c0dc-4b7f-a9a9-3074cfce12fa', secretIdVariable: 'Ali_Key', secretKeyVariable: 'Ali_Secret')]) {
+        withCredentials([cloudApi(credentialsId: '38adbfce-ef65-4778-8b28-bf35bdd33ce9', secretIdVariable: 'Ali_Key', secretKeyVariable: 'Ali_Secret')]) {
             sh '''
                 tee $HOME/.ossutilconfig > /dev/null <<EOF
                 [Credentials]
