@@ -23,12 +23,11 @@ pipeline {
         '''
         withCredentials([cloudApi(credentialsId: '38adbfce-ef65-4778-8b28-bf35bdd33ce9', secretIdVariable: 'Ali_Key', secretKeyVariable: 'Ali_Secret')]) {
             sh '''
-                echo "[Credentials]
-                language=CH
-                endpoint=oss-cn-hangzhou.aliyuncs.com
-                accessKeyID=${Ali_Key}
-                accessKeySecret=${Ali_Secret}" &> $HOME/.ossutilconfig
-                cat $HOME/.ossutilconfig
+echo "[Credentials]
+language=CH
+endpoint=oss-cn-hangzhou.aliyuncs.com
+accessKeyID=${Ali_Key}
+accessKeySecret=${Ali_Secret}" &> $HOME/.ossutilconfig
             '''
         }
       }
