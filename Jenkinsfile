@@ -37,9 +37,7 @@ EOF
     stage('同步') {
       steps {
         sh '''
-            ls -l $HOME/.ossutilconfig
-            ls -l output
-            ossutil ls
+            ossutil sync output/ oss://dongfg-wiki/
         '''
       }
     }
