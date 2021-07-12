@@ -16,21 +16,18 @@ pipeline {
     stage('构建') {
       steps {
         sh '''
-            pip -V
-            pip install simiki
+            pip2 install simiki
             simiki g
             wget -q http://gosspublic.alicdn.com/ossutil/1.7.3/ossutil64 -O /usr/local/bin/ossutil
             chmod 0755 /usr/local/bin/ossutil
         '''
         withCredentials([cloudApi(credentialsId: '38adbfce-ef65-4778-8b28-bf35bdd33ce9', secretIdVariable: 'Ali_Key', secretKeyVariable: 'Ali_Secret')]) {
             sh '''
-                tee $HOME/.ossutilconfig > /dev/null <<EOF
-                [Credentials]
+                echo "[Credentials]
                 language=CH
                 endpoint=oss-cn-hangzhou.aliyuncs.com
                 accessKeyID=${Ali_Key}
-                accessKeySecret=${Ali_Secret}
-                EOF
+                accessKeySecret=${Ali_Secret}" &> $HOME/.ossutilconfig
                 cat $HOME/.ossutilconfig
             '''
         }
