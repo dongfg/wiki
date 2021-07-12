@@ -41,10 +41,10 @@ pipeline {
     }
     stage('同步') {
       steps {
-        script {
+        sh '''
             ls -l output
             ossutil ls
-        }
+        '''
       }
     }
   }
