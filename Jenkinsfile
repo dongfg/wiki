@@ -16,7 +16,7 @@ pipeline {
     stage('构建') {
       steps {
         sh '''
-            pip2 install simiki
+            pip install simiki
             simiki g
             wget -q http://gosspublic.alicdn.com/ossutil/1.7.3/ossutil64 -O /usr/local/bin/ossutil
             chmod 0755 /usr/local/bin/ossutil
