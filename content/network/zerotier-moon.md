@@ -7,7 +7,7 @@ date: 2022-06-11 16:57:11
 
 ### 配置
 
-[Moon 文件] (https://wiki.dongfg.com/attach/0000009fbf1bc3cc.moon)
+[Moon 文件](https://wiki.dongfg.com/attach/0000009fbf1bc3cc.moon)
 
 ## Linux
 ```shell
