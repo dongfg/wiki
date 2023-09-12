@@ -7,13 +7,13 @@ date: 2022-06-11 16:57:11
 
 ### 配置
 
-[Moon 文件](https://wiki.dongfg.com/attach/0000009fbf1bc3cc.moon)
+[Moon 文件](https://wiki.dongfg.com/attach/000000356603d9b9.moon)
 
 ## Linux
 ```shell
-wget https://wiki.dongfg.com/attach/0000009fbf1bc3cc.moon
+wget https://wiki.dongfg.com/attach/000000356603d9b9.moon
 sudo mkdir -p /var/lib/zerotier-one/moons.d
-sudo mv 0000009fbf1bc3cc.moon /var/lib/zerotier-one/moons.d
+sudo mv 000000356603d9b9.moon /var/lib/zerotier-one/moons.d
 sudo chown -R zerotier-one: /var/lib/zerotier-one/moons.d
 sudo systemctl restart zerotier-one.service
 ```
