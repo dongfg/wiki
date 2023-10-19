@@ -20,7 +20,7 @@ jobs:
 
       - name: deploy gh-pages
         run: |
-          cd build
+          cd output
           echo "wiki.dongfg.com" > CNAME
           git init
           git config --local user.name dongfg
