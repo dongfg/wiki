@@ -13,6 +13,9 @@ jobs:
         with:
           python-version: "3.6.15"
           cache: "pip"
+      - uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: "Asia/Shanghai"
       - name: build
         run: |
           pip install -r requirements.txt
