@@ -13,6 +13,11 @@ tag: windows
 reg add HKLM\System\Setup\LabConfig /v BypassTPMCheck /t reg_dword /d 1
 ```
 
+### 跳过强制在线账户
+输入邮箱: no@thankyou.com
+
+输入密码: 任意密码
+
 ### 直接创建本地账户
 
 ```shell

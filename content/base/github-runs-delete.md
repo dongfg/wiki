@@ -1,5 +1,5 @@
 ---
-title: github 批量删除 workflow 记录
+title: GitHub 批量删除 workflow 记录
 date: 2023-10-19 15:20:04
 tag: github
 ---
