@@ -1,11 +1,15 @@
-dongfg' Wiki [![Build Status](https://travis-ci.org/dongfg/wiki.svg?branch=master)](https://travis-ci.org/dongfg/wiki)
+dongfg' Wiki
 ---
+
 [https://wiki.dongfg.com](https://wiki.dongfg.com)
+
+[![build and deploy gh-pages](https://github.com/dongfg/wiki/actions/workflows/gh_pages.yml/badge.svg?branch=master)](https://github.com/dongfg/wiki/actions/workflows/gh_pages.yml)
 
 ## Development
 ```shell
-pyenv install 3.8.16
-pyenv virtualenv 3.8.16 python3
+pyenv install 3.6.15
+pyenv virtualenv 3.6.15 python3
 pip3 install -r requirements.txt
 simiki p
+simiki g
 ```
