@@ -3,6 +3,8 @@ title: Zerotier Moon 节点使用
 date: 2022-06-11 16:57:11
 ---
 
+> 内容已失效
+
 [Moon 节点搭建参考](https://www.tpfuture.top/views/linux/ZerotierOneAddMoon.html#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEzerotier)
 
 ### 配置
