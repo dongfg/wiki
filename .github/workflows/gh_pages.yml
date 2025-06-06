@@ -18,7 +18,7 @@ jobs:
           echo "$HOME/.vfox/bin" >> $GITHUB_PATH
           eval "$(vfox activate bash)"
           vfox add python
-          vfox install python@3.6
+          vfox install python@3.6.8
           vfox use -g python
           pip install -r requirements.txt
           simiki g
