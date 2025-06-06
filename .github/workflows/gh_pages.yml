@@ -12,13 +12,11 @@ jobs:
       - uses: szenius/set-timezone@v2.0
         with:
           timezoneLinux: "Asia/Shanghai"
-      - name: Install vfox
+      - name: build
         run: |
           curl -sSL https://raw.githubusercontent.com/version-fox/vfox/main/install.sh | bash
           echo "$HOME/.vfox/bin" >> $GITHUB_PATH
-          vfox activate bash >> $GITHUB_ENV
-      - name: build
-        run: |
+          eval "$(vfox activate bash)"
           vfox install python 3.6
           vfox use -g python
           pip install -r requirements.txt
