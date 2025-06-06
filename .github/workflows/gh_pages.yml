@@ -7,6 +7,8 @@ jobs:
   build_and_deploy:
     name: build and deploy gh-pages
     runs-on: ubuntu-latest
+    container:
+      image: python:3.6
     steps:
       - uses: actions/checkout@v4
       - uses: szenius/set-timezone@v2.0
@@ -14,12 +16,6 @@ jobs:
           timezoneLinux: "Asia/Shanghai"
       - name: build
         run: |
-          curl -sSL https://raw.githubusercontent.com/version-fox/vfox/main/install.sh | bash
-          echo "$HOME/.vfox/bin" >> $GITHUB_PATH
-          eval "$(vfox activate bash)"
-          vfox add python
-          vfox install python@3.6.8
-          vfox use -g python
           pip install -r requirements.txt
           simiki g
 
