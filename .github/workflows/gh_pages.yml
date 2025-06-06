@@ -17,6 +17,7 @@ jobs:
           curl -sSL https://raw.githubusercontent.com/version-fox/vfox/main/install.sh | bash
           echo "$HOME/.vfox/bin" >> $GITHUB_PATH
           eval "$(vfox activate bash)"
+          vfox add python
           vfox install python 3.6
           vfox use -g python
           pip install -r requirements.txt
