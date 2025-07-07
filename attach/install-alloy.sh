@@ -224,6 +224,7 @@ download_config() {
 }
 
 check_sha() {
+  log '--- Skip checksum'
 }
 
 main() {
