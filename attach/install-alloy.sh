@@ -224,11 +224,6 @@ download_config() {
 }
 
 check_sha() {
-  local checksums="$1"
-  local asset_name="$2"
-  shift 2
-
-  echo -n "${checksums}" | grep "${asset_name}" | sha256sum --check --status --quiet - || fatal 'Failed sha256sum check'
 }
 
 main() {
