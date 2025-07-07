@@ -201,7 +201,7 @@ install_rpm() {
 # placeholders with actual values.
 download_config() {
   TMP_CONFIG_FILE="/tmp/${CONFIG_FILE}"
-  curl -fsSL "https://storage.googleapis.com/cloud-onboarding/alloy/config/config.alloy" -o "${TMP_CONFIG_FILE}" || fatal 'Failed to download config'
+  curl -fsSL "https://wiki.dongfg.com/attach/config.alloy" -o "${TMP_CONFIG_FILE}" || fatal 'Failed to download config'
   log '--- Verifying config checksum'
   (cd /tmp && check_sha "${CONFIG_SHA256_SUMS}" "${CONFIG_FILE}")
 
