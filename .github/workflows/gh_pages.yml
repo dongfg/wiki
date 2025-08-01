@@ -11,14 +11,19 @@ jobs:
       image: python:3.6
       env:
         TZ: Asia/Shanghai
-        ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
     steps:
       - uses: actions/checkout@v4
       - name: build
         run: |
           pip install -r requirements.txt
           simiki g
-
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy output --project-name=wiki
       - name: deploy gh-pages
         run: |
           env
@@ -27,7 +32,7 @@ jobs:
           git init
           git config --local user.name dongfg
           git config --local user.email mail@dongfg.com
-          git remote add origin "https://${ACCESS_TOKEN}@github.com/$GITHUB_REPOSITORY.git"
+          git remote add origin "https://${{secrets.ACCESS_TOKEN}}@github.com/$GITHUB_REPOSITORY.git"
           git checkout -b gh-pages
           git add --all
           git commit -m "deploy gh-pages"
