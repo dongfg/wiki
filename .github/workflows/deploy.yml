@@ -17,12 +17,22 @@ jobs:
         run: |
           pip install -r requirements.txt
           simiki g
+      - name: Upload output artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-folder
+          path: output/
 
   deploy:
     name: deploy
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Download output artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: output-folder
+          path: output/
       - name: deploy cloudflare pages
         uses: cloudflare/wrangler-action@v3
         with:
