@@ -4,11 +4,16 @@ date: 2023-11-12 22:13:00
 tag: windows
 ---
 
+## ！！！Powershell ！！！
+```powershell
+# 一键激活
+irm https://get.activated.win | iex
+```
+
 ## 应用列表
 
 | 名称               | 简介               | scoop 快速安装         | 地址                                                 |
 | ------------------ | ------------------ | ---------------------- | ---------------------------------------------------- |
-| 火绒               | 安全软件           | -                      | https://www.huorong.cn                               |
 | snipaste           | 截图软件           | extras/snipaste        | https://www.snipaste.com/                            |
 | PowerToys          | 微软出品的工具集合 | extras/powertoys       | github.com/microsoft/PowerToys                       |
 | DevToys            | 开发工具集合       | nonportable/devtoys-np | github.com/microsoft/PowerToys                       |
