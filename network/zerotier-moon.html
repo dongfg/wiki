@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>Zerotier Moon 节点使用 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#network">network</a>
+    &nbsp;&#187;&nbsp;Zerotier Moon 节点使用
+    <span class="updated">Updated&nbsp;
+    2022-06-11 16:57:11
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <blockquote>
+<p>内容已失效</p>
+</blockquote>
+<p><a href="https://www.tpfuture.top/views/linux/ZerotierOneAddMoon.html#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEzerotier">Moon 节点搭建参考</a></p>
+<h3 id="_1">配置</h3>
+<p><a href="https://wiki.dongfg.com/attach/000000356603d9b9.moon">Moon 文件</a></p>
+<h2 id="linux">Linux</h2>
+<div class="hlcode"><pre><span class="n">wget</span> <span class="n">https</span><span class="o">:</span><span class="c1">//wiki.dongfg.com/attach/000000356603d9b9.moon</span>
+<span class="n">sudo</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">zerotier</span><span class="o">-</span><span class="n">one</span><span class="o">/</span><span class="n">moons</span><span class="p">.</span><span class="n">d</span>
+<span class="n">sudo</span> <span class="n">mv</span> <span class="mo">000000356603</span><span class="n">d9b9</span><span class="p">.</span><span class="n">moon</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">zerotier</span><span class="o">-</span><span class="n">one</span><span class="o">/</span><span class="n">moons</span><span class="p">.</span><span class="n">d</span>
+<span class="n">sudo</span> <span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">zerotier</span><span class="o">-</span><span class="n">one</span><span class="o">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">zerotier</span><span class="o">-</span><span class="n">one</span><span class="o">/</span><span class="n">moons</span><span class="p">.</span><span class="n">d</span>
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">zerotier</span><span class="o">-</span><span class="n">one</span><span class="p">.</span><span class="n">service</span>
+</pre></div>
+
+
+<h2 id="windows">Windows</h2>
+<p>打开服务 <code>ZeroTier One</code>, 找到可执行文件路径</p>
+<p>并且在其下建立 <code>moons.d</code> 文件夹, 放入 Moon 文件, 重启服务</p>
+<p>路径一般是Windows: C:\ProgramData\ZeroTier\One</p>
+<h3 id="_2">查看节点是否连接</h3>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">zerotier</span><span class="o">-</span><span class="n">cli</span> <span class="n">listpeers</span>
+
+<span class="mi">200</span> <span class="n">listpeers</span> <span class="n">xx</span> <span class="n">xxxx</span> <span class="n">xx</span> <span class="mf">1.8.10</span> <span class="n">MOON</span>
+</pre></div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-10 16:43:44</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>
