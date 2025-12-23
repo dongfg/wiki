@@ -33,13 +33,6 @@ jobs:
         with:
           name: output-folder
           path: output/
-      - name: deploy cloudflare pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: pages deploy output --project-name=wiki
       - name: deploy github pages
         run: |
           env
