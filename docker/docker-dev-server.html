@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>用docker配置开发环境服务 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#docker">docker</a>
+    &nbsp;&#187;&nbsp;用docker配置开发环境服务
+    <span class="updated">Updated&nbsp;
+    2018-10-16 09:30:48
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <h3 id="dev-serveryml">dev-server.yml</h3>
+<p><a href="../../attach/dev-server.yml">点击此处下载</a></p>
+<div class="hlcode"><pre><span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="s">&quot;3.1&quot;</span>
+<span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">mysql</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mysql</span>
+    <span class="l-Scalar-Plain">container_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dev-server-mysql</span>
+    <span class="l-Scalar-Plain">restart</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">always</span>
+    <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">53306:3306</span>
+    <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">MYSQL_ROOT_PASSWORD</span><span class="p-Indicator">:</span> <span class="s">&quot;4DevOn1y&quot;</span>
+  <span class="l-Scalar-Plain">redis</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">redis</span>
+    <span class="l-Scalar-Plain">container_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dev-server-redis</span>
+    <span class="l-Scalar-Plain">restart</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">always</span>
+    <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">56379:6379</span>
+  <span class="l-Scalar-Plain">mongo</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mongo</span>
+    <span class="l-Scalar-Plain">restart</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">always</span>
+    <span class="l-Scalar-Plain">container_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dev-server-mongo</span>
+    <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">57017:27017</span>
+    <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">MONGO_INITDB_ROOT_USERNAME</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
+      <span class="l-Scalar-Plain">MONGO_INITDB_ROOT_PASSWORD</span><span class="p-Indicator">:</span> <span class="s">&quot;4DevOn1y&quot;</span>
+  <span class="l-Scalar-Plain">rabbitmq</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">rabbitmq:3-management</span>
+    <span class="l-Scalar-Plain">restart</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">always</span>
+    <span class="l-Scalar-Plain">container_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dev-server-rabbitmq</span>
+    <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">55672:5672</span>
+    <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">RABBITMQ_DEFAULT_USER</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
+      <span class="l-Scalar-Plain">RABBITMQ_DEFAULT_PASS</span><span class="p-Indicator">:</span> <span class="s">&quot;4DevOn1y&quot;</span>
+</pre></div>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/docker/nexus-docker.html">nexus3 docker private registry</a></li>
+  
+    <li><a href="/docker/docker-teamcity.html">Teamcity 配置</a></li>
+  
+    <li><a href="/docker/docker-basic-config.html">docker 基础配置</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>Spring 日志配置 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#java">java</a>
+    &nbsp;&#187;&nbsp;Spring 日志配置
+    <span class="updated">Updated&nbsp;
+    2020-03-09 10:12:48
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <blockquote>
+<p>官方文档 <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto-logging">howto-logging</a></p>
+</blockquote>
+<h2 id="appender">剥离 appender</h2>
+<p><code>logback-appender.xml</code>: </p>
+<div class="hlcode"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;included&gt;</span>
+    <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">&quot;APP_FILE&quot;</span>
+              <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;encoder&gt;</span>
+            <span class="nt">&lt;pattern&gt;</span>${APP_FILE_LOG_PATTERN:-${FILE_LOG_PATTERN}}<span class="nt">&lt;/pattern&gt;</span>
+        <span class="nt">&lt;/encoder&gt;</span>
+        <span class="nt">&lt;file&gt;</span>${APP_LOG_FILE}<span class="nt">&lt;/file&gt;</span>
+        <span class="nt">&lt;rollingPolicy</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;cleanHistoryOnStart&gt;</span>${APP_LOG_FILE_CLEAN_HISTORY_ON_START:-${LOG_FILE_CLEAN_HISTORY_ON_START:-false}}
+            <span class="nt">&lt;/cleanHistoryOnStart&gt;</span>
+            <span class="nt">&lt;fileNamePattern&gt;</span>${APP_ROLLING_FILE_NAME_PATTERN:-${APP_LOG_FILE}.%d{yyyy-MM-dd}.%i.gz}<span class="nt">&lt;/fileNamePattern&gt;</span>
+            <span class="nt">&lt;maxFileSize&gt;</span>${APP_LOG_FILE_MAX_SIZE:-${LOG_FILE_MAX_SIZE:-10MB}}<span class="nt">&lt;/maxFileSize&gt;</span>
+            <span class="nt">&lt;maxHistory&gt;</span>${APP_LOG_FILE_MAX_HISTORY:-${LOG_FILE_MAX_HISTORY:-7}}<span class="nt">&lt;/maxHistory&gt;</span>
+            <span class="nt">&lt;totalSizeCap&gt;</span>${APP_LOG_FILE_TOTAL_SIZE_CAP:-${LOG_FILE_TOTAL_SIZE_CAP:-0}}<span class="nt">&lt;/totalSizeCap&gt;</span>
+        <span class="nt">&lt;/rollingPolicy&gt;</span>
+    <span class="nt">&lt;/appender&gt;</span>
+<span class="nt">&lt;/included&gt;</span>
+</pre></div>
+
+
+<h3 id="spring-logback">spring-logback 配置</h3>
+<p><code>spring-logback.xml</code>:</p>
+<div class="hlcode"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;include</span> <span class="na">resource=</span><span class="s">&quot;org/springframework/boot/logging/logback/defaults.xml&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;LOG_FILE&quot;</span> <span class="na">value=</span><span class="s">&quot;${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.log}&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;APP_LOG_FILE&quot;</span>
+              <span class="na">value=</span><span class="s">&quot;${APP_LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}application.log}&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;include</span> <span class="na">resource=</span><span class="s">&quot;org/springframework/boot/logging/logback/console-appender.xml&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;include</span> <span class="na">resource=</span><span class="s">&quot;org/springframework/boot/logging/logback/file-appender.xml&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;include</span> <span class="na">resource=</span><span class="s">&quot;logback-appender.xml&quot;</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;com.change.it&quot;</span> <span class="na">level=</span><span class="s">&quot;DEBUG&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;APP_FILE&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/logger&gt;</span>
+    <span class="nt">&lt;root</span> <span class="na">level=</span><span class="s">&quot;INFO&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;CONSOLE&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;FILE&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/root&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</pre></div>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/java/hikaricp-config.html">HikariCP 数据源常用配置</a></li>
+  
+    <li><a href="/java/maven-latest-version.html">Maven 依赖使用最新版本</a></li>
+  
+    <li><a href="/java/consul-for-spring-boot.html">Spring Boot 基于 consul 的服务发现于配置管理</a></li>
+  
+    <li><a href="/java/spring-boot-hot-swap.html">IDEA下spring-boot-freemarker 热部署</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

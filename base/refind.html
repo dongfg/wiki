@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>rEFInd 多系统启动配置 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#base">base</a>
+    &nbsp;&#187;&nbsp;rEFInd 多系统启动配置
+    <span class="updated">Updated&nbsp;
+    2025-12-24 13:44:08
+    
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <h2 id="menuentry">menuentry</h2>
+<h3 id="volume">volume 设置</h3>
+<p>diskpart 中挂载分区</p>
+<div class="hlcode"><pre><span class="n">select</span> <span class="n">disk</span> <span class="mi">0</span>
+<span class="n">select</span> <span class="n">partition</span> <span class="n">X</span>
+<span class="n">assign</span> <span class="n">letter</span><span class="o">=</span><span class="n">Z</span>
+<span class="n">exit</span>
+</pre></div>
+
+
+<p>cmd 中设置 label</p>
+<div class="hlcode"><pre><span class="n">label</span> <span class="n">Z</span><span class="o">:</span> <span class="n">ESP_DISK_0</span>
+</pre></div>
+
+
+<h3 id="icon">icon 注意事项</h3>
+<blockquote>
+<p>menuentry 中配置的顺序很关键，如果先写 volume 再写 icon，当 volume 不是 rEFInd 所在的 ESP 时图标展示有问题</p>
+</blockquote>
+<div class="hlcode"><pre><span class="n">menuentry</span> <span class="s">&quot;SSD 120G&quot;</span> <span class="p">{</span>
+    <span class="n">icon</span> <span class="err">\</span><span class="n">EFI</span><span class="err">\</span><span class="n">refind</span><span class="err">\</span><span class="n">theme</span><span class="err">\</span><span class="n">icons</span><span class="err">\</span><span class="n">os_win</span><span class="p">.</span><span class="n">png</span>
+    <span class="n">volume</span> <span class="s">&quot;ESP_DISK_0&quot;</span>
+    <span class="n">loader</span> <span class="err">\</span><span class="n">EFI</span><span class="err">\</span><span class="n">Microsoft</span><span class="err">\</span><span class="n">Boot</span><span class="err">\</span><span class="n">bootmgfw</span><span class="p">.</span><span class="n">efi</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3 id="uefi-shell">UEFI SHELL</h3>
+<p>tools 中默认不包含，需要自行下载</p>
+<h2 id="_1">其他杂项</h2>
+<div class="hlcode"><pre><span class="cp"># 只保留类似 Boot SSD 120G from ESP_DISK_0 的提示</span>
+<span class="n">hideui</span> <span class="n">singleuser</span><span class="p">,</span> <span class="n">editor</span><span class="p">,</span> <span class="n">badges</span><span class="p">,</span> <span class="n">hints</span>
+
+<span class="cp"># 不要自动扫描 boot loader</span>
+<span class="n">scanfor</span> <span class="n">manual</span>
+</pre></div>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/windows/wsl.html">WSL 环境</a></li>
+  
+    <li><a href="/windows/windows-app.html">Windows 常用应用列表</a></li>
+  
+    <li><a href="/windows/windows-11-account.html">Windows 11 跳过TPM检查及微软账户</a></li>
+  
+    <li><a href="/windows/windows-scoop.html">Scoop 快速安装 Windows 应用</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>Gitlab /api/v4/projects/ 404 fix - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#base">base</a>
+    &nbsp;&#187;&nbsp;Gitlab /api/v4/projects/ 404 fix
+    <span class="updated">Updated&nbsp;
+    2020-03-12 14:05:39
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <h2 id="namespaced-path-encoding">namespaced-path-encoding</h2>
+<p>Official doc： https://docs.gitlab.com/ce/api/README.html#namespaced-path-encoding</p>
+<p>If using namespaced API calls, make sure that the <code>NAMESPACE/PROJECT_PATH</code> is URL-encoded.</p>
+<p>For example, <code>/</code> is represented by <code>%2F</code>:</p>
+<div class="hlcode"><pre><span class="n">GET</span> <span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v4</span><span class="o">/</span><span class="n">projects</span><span class="o">/</span><span class="n">diaspora</span><span class="o">%</span><span class="mf">2F</span><span class="n">diaspora</span>
+</pre></div>
+
+
+<h2 id="solution">Solution</h2>
+<p>If you are using nginx as a proxy to access gitlab:</p>
+<p>change <code>proxy_pass</code> from <code>proxy_pass https://gitlab/</code> to <code>proxy_pass proxy_pass https://gitlab$request_uri;</code></p>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/base/git-commit-msg.html">Git commit message</a></li>
+  
+    <li><a href="/base/git-commit-msg-angular.html">AngularJS Git Commit Message Conventions</a></li>
+  
+    <li><a href="/base/git-workflow.html">Git 工作流</a></li>
+  
+    <li><a href="/base/git-basic.html">Git 基本知识</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

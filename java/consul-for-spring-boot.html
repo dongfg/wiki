@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>Spring Boot 基于 consul 的服务发现于配置管理 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#java">java</a>
+    &nbsp;&#187;&nbsp;Spring Boot 基于 consul 的服务发现于配置管理
+    <span class="updated">Updated&nbsp;
+    2019-04-15 15:07:44
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#consul">Consul</a><ul>
+<li><a href="#httpswwwconsuliodownloadshtml">下载地址 https://www.consul.io/downloads.html</a></li>
+<li><a href="#_1">单机配置</a></li>
+<li><a href="#systemd">systemd 服务</a></li>
+<li><a href="#acl">ACL</a><ul>
+<li><a href="#acl-agent-token">启用 ACL, 配置 agent token</a></li>
+<li><a href="#policy-token">Policy 及 Token 创建流程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#spring-boot">Spring Boot</a><ul>
+<li><a href="#_2">依赖</a></li>
+<li><a href="#bootstrap">bootstrap</a></li>
+<li><a href="#application-config">application config</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="consul">Consul</h2>
+<h3 id="httpswwwconsuliodownloadshtml">下载地址 https://www.consul.io/downloads.html</h3>
+<p>使用 Centos 7 环境</p>
+<div class="hlcode"><pre><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">consul</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">consul</span>
+<span class="n">mkdir</span> <span class="n">conf</span><span class="p">.</span><span class="n">d</span> <span class="n">data</span>
+<span class="n">wget</span> <span class="n">https</span><span class="o">:</span><span class="c1">//releases.hashicorp.com/consul/1.4.4/consul_1.4.4_linux_amd64.zip &amp;&amp; unzip consul_1.4.4_linux_amd64.zip</span>
+<span class="n">mv</span> <span class="n">consul</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">consul_1</span><span class="mf">.4.4</span><span class="n">_linux_amd64</span><span class="p">.</span><span class="n">zip</span>
+</pre></div>
+
+
+<h3 id="_1">单机配置</h3>
+<div class="hlcode"><pre><span class="n">cat</span> <span class="o">&lt;&lt;</span><span class="n">EOF</span> <span class="o">&gt;</span> <span class="n">conf</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">config</span><span class="p">.</span><span class="n">json</span>
+<span class="p">{</span>
+  <span class="s">&quot;bootstrap&quot;</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span>
+  <span class="s">&quot;bind_addr&quot;</span><span class="o">:</span> <span class="s">&quot;127.0.0.1&quot;</span><span class="p">,</span>
+  <span class="s">&quot;client_addr&quot;</span><span class="o">:</span> <span class="s">&quot;10.64.90.127&quot;</span><span class="p">,</span>
+  <span class="s">&quot;datacenter&quot;</span><span class="o">:</span> <span class="s">&quot;dev&quot;</span><span class="p">,</span>
+  <span class="s">&quot;data_dir&quot;</span><span class="o">:</span> <span class="s">&quot;/opt/apps/consul/data&quot;</span><span class="p">,</span>
+  <span class="s">&quot;log_level&quot;</span><span class="o">:</span> <span class="s">&quot;INFO&quot;</span><span class="p">,</span>
+  <span class="s">&quot;node_name&quot;</span><span class="o">:</span> <span class="s">&quot;consul-dev&quot;</span><span class="p">,</span>
+  <span class="s">&quot;server&quot;</span><span class="o">:</span> <span class="nb">true</span>
+<span class="p">}</span>
+<span class="n">EOF</span>
+</pre></div>
+
+
+<h3 id="systemd">systemd 服务</h3>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">consul</span><span class="p">.</span><span class="n">service</span>
+<span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=</span><span class="n">consul</span> <span class="n">agent</span>
+<span class="n">Requires</span><span class="o">=</span><span class="n">network</span><span class="o">-</span><span class="n">online</span><span class="p">.</span><span class="n">target</span>
+<span class="n">After</span><span class="o">=</span><span class="n">network</span><span class="o">-</span><span class="n">online</span><span class="p">.</span><span class="n">target</span>
+
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">Environment</span><span class="o">=</span><span class="n">GOMAXPROCS</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">Restart</span><span class="o">=</span><span class="n">on</span><span class="o">-</span><span class="n">failure</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">consul</span> <span class="n">agent</span> <span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">consul</span><span class="o">/</span><span class="n">conf</span><span class="p">.</span><span class="n">d</span><span class="o">/</span> <span class="o">-</span><span class="n">ui</span>
+<span class="n">ExecReload</span><span class="o">=/</span><span class="n">bin</span><span class="o">/</span><span class="n">kill</span> <span class="o">-</span><span class="n">HUP</span> <span class="err">$</span><span class="n">MAINPID</span>
+<span class="n">KillSignal</span><span class="o">=</span><span class="n">SIGTERM</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="p">.</span><span class="n">target</span>
+</pre></div>
+
+
+<h3 id="acl">ACL</h3>
+<p>https://learn.hashicorp.com/consul/advanced/day-1-operations/acl-guide</p>
+<blockquote>
+<p>权限划分</p>
+</blockquote>
+<h4 id="acl-agent-token">启用 ACL, 配置 agent token</h4>
+<table>
+<thead>
+<tr>
+<th>Policy Name</th>
+<th>Node Policy</th>
+<th>Service Policy</th>
+<th>Key Policy(K/V)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent</td>
+<td>write all</td>
+<td>read all</td>
+<td>read all</td>
+</tr>
+<tr>
+<td>KV数据管理</td>
+<td>read all</td>
+<td>read all</td>
+<td>write all</td>
+</tr>
+<tr>
+<td>单个微服务</td>
+<td>read all</td>
+<td>read all, write self</td>
+<td>read self(config/appName[,env]/data)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>样例：<br />
+- read all: node_prefix "" { policy = "read" }, service_prefix "" { policy = "read" }<br />
+- write all: node_prefix "" { policy = "write" }, service_prefix "" { policy = "write" }<br />
+- read self: key_prefix "config/appName" { policy = "read" }</p>
+</blockquote>
+<div class="hlcode"><pre><span class="cp"># 添加配置</span>
+<span class="s">&quot;acl&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s">&quot;enabled&quot;</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span>
+  <span class="s">&quot;default_policy&quot;</span><span class="o">:</span> <span class="s">&quot;deny&quot;</span><span class="p">,</span>
+  <span class="s">&quot;down_policy&quot;</span><span class="o">:</span> <span class="s">&quot;extend-cache&quot;</span>
+<span class="p">}</span>
+<span class="cp"># 重启服务后创建Bootstrap Token</span>
+<span class="n">consul</span> <span class="n">acl</span> <span class="n">bootstrap</span>
+<span class="nl">AccessorID:</span>   <span class="n">d985a0ae</span><span class="o">-</span><span class="mi">8</span><span class="n">b42</span><span class="o">-</span><span class="mi">3</span><span class="n">ec4</span><span class="o">-</span><span class="mi">3333</span><span class="o">-</span><span class="mi">6</span><span class="n">d2cc44fbd19</span>
+<span class="nl">SecretID:</span>     <span class="mf">4e3</span><span class="n">ff3bd</span><span class="o">-</span><span class="mi">5</span><span class="n">c63</span><span class="o">-</span><span class="mi">71</span><span class="n">c2</span><span class="o">-</span><span class="mi">328</span><span class="n">c</span><span class="o">-</span><span class="mi">9</span><span class="n">b2a5bf7ff66</span>
+<span class="nl">Description:</span>  <span class="n">Bootstrap</span> <span class="n">Token</span> <span class="p">(</span><span class="n">Global</span> <span class="n">Management</span><span class="p">)</span>
+<span class="nl">Local:</span>        <span class="nb">false</span>
+<span class="n">Create</span> <span class="n">Time</span><span class="o">:</span>  <span class="mi">2019</span><span class="o">-</span><span class="mo">04</span><span class="o">-</span><span class="mi">16</span> <span class="mi">09</span><span class="o">:</span><span class="mi">13</span><span class="o">:</span><span class="mf">27.0869488</span> <span class="o">+</span><span class="mi">0800</span> <span class="n">CST</span>
+<span class="nl">Policies:</span>
+   <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span> <span class="o">-</span> <span class="n">global</span><span class="o">-</span><span class="n">management</span>
+
+<span class="cp"># 使用 Bootstrap Token 创建 Agent Token</span>
+<span class="cp"># !妥善保管 Bootstrap Token</span>
+<span class="cp"># 过程见下方演示，生成之后添加到配置文件，重启服务</span>
+<span class="s">&quot;acl&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s">&quot;enabled&quot;</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span>
+  <span class="s">&quot;default_policy&quot;</span><span class="o">:</span> <span class="s">&quot;deny&quot;</span><span class="p">,</span>
+  <span class="s">&quot;down_policy&quot;</span><span class="o">:</span> <span class="s">&quot;extend-cache&quot;</span><span class="p">,</span>
+  <span class="s">&quot;tokens&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s">&quot;agent&quot;</span><span class="o">:</span> <span class="s">&quot;da666809-98ca-0e94-a99c-893c4bf5f9eb&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h4 id="policy-token">Policy 及 Token 创建流程</h4>
+<div class="hlcode"><pre><span class="cp"># 新建/更新 Policy</span>
+<span class="n">cat</span> <span class="o">&lt;&lt;</span><span class="n">EOF</span> <span class="o">&gt;</span> <span class="n">conf</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">config</span><span class="p">.</span><span class="n">json</span>
+<span class="n">node_prefix</span> <span class="s">&quot;&quot;</span> <span class="p">{</span>
+  <span class="n">policy</span> <span class="o">=</span> <span class="s">&quot;read&quot;</span>
+<span class="p">}</span>
+<span class="n">service_prefix</span> <span class="s">&quot;&quot;</span> <span class="p">{</span>
+  <span class="n">policy</span> <span class="o">=</span> <span class="s">&quot;read&quot;</span>
+<span class="p">}</span>
+<span class="n">key_prefix</span> <span class="s">&quot;&quot;</span> <span class="p">{</span>
+  <span class="n">policy</span> <span class="o">=</span> <span class="s">&quot;write&quot;</span>
+<span class="p">}</span>
+<span class="n">EOF</span>
+<span class="n">consul</span> <span class="n">acl</span> <span class="n">policy</span> <span class="n">create</span><span class="o">/</span><span class="n">update</span> <span class="o">-</span><span class="n">name</span> <span class="s">&quot;POLICY_NAME&quot;</span> <span class="o">-</span><span class="n">description</span> <span class="s">&quot;POLICY_DESC&quot;</span> <span class="o">-</span><span class="n">rules</span> <span class="err">@</span><span class="n">policy</span><span class="p">.</span><span class="n">hcl</span>
+<span class="cp"># 新建/更新 Token</span>
+<span class="n">consul</span> <span class="n">acl</span> <span class="n">token</span> <span class="n">create</span> <span class="o">-</span><span class="n">description</span> <span class="s">&quot;TOKEN_DESC&quot;</span> <span class="o">-</span><span class="n">policy</span><span class="o">-</span><span class="n">name</span> <span class="s">&quot;POLICY_NAME&quot;</span>
+</pre></div>
+
+
+<h2 id="spring-boot">Spring Boot</h2>
+<p>https://cloud.spring.io/spring-cloud-consul/single/spring-cloud-consul.html</p>
+<h3 id="_2">依赖</h3>
+<div class="hlcode"><pre><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-consul-discovery<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-consul-config<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+
+
+<h3 id="bootstrap">bootstrap</h3>
+<div class="hlcode"><pre><span class="l-Scalar-Plain">spring</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">profiles</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">active</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dev</span>
+  <span class="l-Scalar-Plain">application</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">api-template</span>
+
+<span class="nn">---</span>
+<span class="l-Scalar-Plain">spring</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">profiles</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dev</span>
+  <span class="l-Scalar-Plain">cloud</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">consul</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">host</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">10.64.90.127</span>
+      <span class="l-Scalar-Plain">port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">8500</span>
+      <span class="l-Scalar-Plain">config</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+        <span class="l-Scalar-Plain">format</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yaml</span>
+        <span class="l-Scalar-Plain">data-key</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yaml</span>
+        <span class="l-Scalar-Plain">acl-token</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">18052848-44f7-dffa-d1af-e49eb484de49</span>
+</pre></div>
+
+
+<h3 id="application-config">application config</h3>
+<div class="hlcode"><pre><span class="l-Scalar-Plain">spring</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">cloud</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">consul</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">discovery</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">acl-token</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">18052848-44f7-dffa-d1af-e49eb484de49</span>
+        <span class="l-Scalar-Plain">instance-id</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}</span>
+</pre></div>
+
+
+<blockquote>
+<p>spring.cloud.consul.discovery.instance-id 默认值是 应用名:端口，会导致多个 instance 的 instance-id 相同</p>
+</blockquote>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/java/hikaricp-config.html">HikariCP 数据源常用配置</a></li>
+  
+    <li><a href="/java/maven-latest-version.html">Maven 依赖使用最新版本</a></li>
+  
+    <li><a href="/java/spring-logging.html">Spring 日志配置</a></li>
+  
+    <li><a href="/java/spring-boot-hot-swap.html">IDEA下spring-boot-freemarker 热部署</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

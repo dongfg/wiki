@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>HikariCP 数据源常用配置 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#java">java</a>
+    &nbsp;&#187;&nbsp;HikariCP 数据源常用配置
+    <span class="updated">Updated&nbsp;
+    2018-10-08 13:57:00
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <h2 id="_1">常用配置项</h2>
+<h3 id="connectiontimeout">connectionTimeout</h3>
+<p>默认值： 30000 (30 seconds)<br />
+从连接池中取连接最大的等待时间，如果超时没取到，会抛出异常</p>
+<h3 id="maxlifetime">maxLifetime</h3>
+<p>默认值： 1800000 (30 minutes)<br />
+连接的最大生命周期，建议设置值比数据库自动断开连接时间（比如 mysql 的 wait_timeout ）小几秒</p>
+<h3 id="maximumpoolsize">maximumPoolSize</h3>
+<p>默认值：10<br />
+<a href="https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing">建议设置</a><br />
+connections = ((core_count * 2) + effective_spindle_count)</p>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/java/consul-for-spring-boot.html">Spring Boot 基于 consul 的服务发现于配置管理</a></li>
+  
+    <li><a href="/java/maven-latest-version.html">Maven 依赖使用最新版本</a></li>
+  
+    <li><a href="/java/spring-boot-hot-swap.html">IDEA下spring-boot-freemarker 热部署</a></li>
+  
+    <li><a href="/java/spring-logging.html">Spring 日志配置</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>WSL 环境 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#windows">windows</a>
+    &nbsp;&#187;&nbsp;WSL 环境
+    <span class="updated">Updated&nbsp;
+    2025-06-24 13:34:17
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <h1 id="_1">备份、恢复</h1>
+<div class="hlcode"><pre><span class="nx">wsl</span> <span class="o">--</span><span class="nx">export</span> <span class="nx">Debian</span> <span class="nx">debian_wsl.tar</span>
+<span class="err">#</span> <span class="nx">wsl</span> <span class="o">--</span><span class="k">import</span> <span class="o">&lt;</span><span class="nx">DistroName</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nx">InstallLocation</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nx">InstallTarFile</span><span class="o">&gt;</span>
+<span class="nx">wsl</span> <span class="o">--</span><span class="k">import</span> <span class="nx">Debian</span> <span class="nb">D</span><span class="p">:</span><span class="o">\</span><span class="nx">Debian</span> <span class="nx">.</span><span class="o">\</span><span class="nx">debian_wsl.tar</span>
+</pre></div>
+
+
+<h1 id="wsl">wsl 访问宿主机网络</h1>
+<div class="hlcode"><pre><span class="cp"># 获取宿主机 IP</span>
+<span class="n">ip</span> <span class="n">route</span> <span class="n">show</span> <span class="k">default</span> <span class="o">|</span> <span class="n">awk</span> <span class="err">&#39;</span><span class="o">/</span><span class="k">default</span><span class="o">/</span> <span class="p">{</span><span class="n">print</span> <span class="err">$</span><span class="mi">3</span><span class="p">;</span> <span class="n">exit</span><span class="p">}</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<h1 id="wslconf"><a href="https://learn.microsoft.com/zh-cn/windows/wsl/wsl-config">wsl.conf 配置</a></h1>
+<div class="hlcode"><pre><span class="cp"># 比如指定主机名</span>
+<span class="p">[</span><span class="n">network</span><span class="p">]</span>
+<span class="n">generateHosts</span><span class="o">=</span><span class="nb">false</span>
+<span class="n">hostname</span><span class="o">=</span><span class="n">wsl</span><span class="o">-</span><span class="n">debian</span>
+</pre></div>
+
+
+<h1 id="wsl-bitwarden-ssh-agent">wsl 访问宿主机 bitwarden ssh agent</h1>
+<h2 id="wsl-socat-npiperelay">wsl 需要安装 socat + npiperelay</h2>
+<ul>
+<li><code>sudo apt install socat</code></li>
+<li>https://github.com/jstarks/npiperelay</li>
+<li>release 中下载 npiperelay_windows_amd64.zip 解压 npiperelay.exe 到 /usr/local/bin</li>
+</ul>
+<h2 id="bitwarden-ssh-agentsh">bitwarden-ssh-agent.sh</h2>
+<div class="hlcode"><pre><span class="c">#!/bin/bash</span>
+
+<span class="c"># 设置套接字路径</span>
+<span class="nv">SOCKET_PATH</span><span class="o">=</span><span class="s2">&quot;$HOME/.ssh/agent.sock&quot;</span>
+
+<span class="c"># 清理旧套接字</span>
+rm -f <span class="nv">$SOCKET_PATH</span>
+
+<span class="c"># 启动转发</span>
+setsid nohup socat <span class="se">\</span>
+  UNIX-LISTEN:<span class="nv">$SOCKET_PATH</span>,fork <span class="se">\</span>
+  EXEC:<span class="s2">&quot;/usr/local/bin/npiperelay.exe -ei -s //./pipe/openssh-ssh-agent&quot;</span>,nofork <span class="se">\</span>
+  &gt;/dev/null 2&gt;&amp;1 &amp;
+
+<span class="c"># 设置环境变量</span>
+<span class="nb">export </span><span class="nv">SSH_AUTH_SOCK</span><span class="o">=</span><span class="nv">$SOCKET_PATH</span>
+</pre></div>
+
+
+<h2 id="bitwarden-ssh-agentsh_1">bitwarden-ssh-agent.sh 自动执行</h2>
+<blockquote>
+<p>.bashrc/.zshrc</p>
+</blockquote>
+<div class="hlcode"><pre><span class="cp"># 启动 Bitwarden SSH Agent 转发</span>
+<span class="k">if</span> <span class="p">[</span> <span class="o">-</span><span class="n">z</span> <span class="s">&quot;$SSH_AUTH_SOCK&quot;</span> <span class="p">];</span> <span class="n">then</span>
+    <span class="n">source</span> <span class="o">~/</span><span class="p">.</span><span class="n">ssh</span><span class="o">/</span><span class="n">bitwarden</span><span class="o">-</span><span class="n">ssh</span><span class="o">-</span><span class="n">agent</span><span class="p">.</span><span class="n">sh</span> <span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span> <span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span>
+<span class="n">fi</span>
+</pre></div>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/windows/windows-app.html">Windows 常用应用列表</a></li>
+  
+    <li><a href="/windows/windows-11-account.html">Windows 11 跳过TPM检查及微软账户</a></li>
+  
+    <li><a href="/windows/windows-scoop.html">Scoop 快速安装 Windows 应用</a></li>
+  
+    <li><a href="/base/refind.html">rEFInd 多系统启动配置</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

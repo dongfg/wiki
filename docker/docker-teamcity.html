@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>Teamcity 配置 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#docker">docker</a>
+    &nbsp;&#187;&nbsp;Teamcity 配置
+    <span class="updated">Updated&nbsp;
+    2018-10-26 14:14:24
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <h3 id="teamcity-docker">teamcity-docker</h3>
+<div class="hlcode"><pre><span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="s">&quot;3&quot;</span>
+<span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">server</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">jetbrains/teamcity-server</span>
+    <span class="l-Scalar-Plain">container_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">teamcity-server</span>
+    <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="s">&quot;8111:8111&quot;</span>
+    <span class="l-Scalar-Plain">volumes</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/opt/docker/teamcity/data:/data/teamcity_server/datadir</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/opt/docker/teamcity/logs:/opt/teamcity/logs</span>
+  <span class="l-Scalar-Plain">teamcity-agent</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">jetbrains/teamcity-agent</span>
+    <span class="l-Scalar-Plain">container_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">teamcity-agent-1</span>
+    <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">SERVER_URL=http://server:8111</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">AGENT_NAME=agent-1</span>
+</pre></div>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/docker/nexus-docker.html">nexus3 docker private registry</a></li>
+  
+    <li><a href="/docker/docker-dev-server.html">用docker配置开发环境服务</a></li>
+  
+    <li><a href="/docker/docker-basic-config.html">docker 基础配置</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

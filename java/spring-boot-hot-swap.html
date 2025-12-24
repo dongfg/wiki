@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>IDEA下spring-boot-freemarker 热部署 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#java">java</a>
+    &nbsp;&#187;&nbsp;IDEA下spring-boot-freemarker 热部署
+    <span class="updated">Updated&nbsp;
+    2018-01-10 11:12:39
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <h3 id="1-devtools">1. 添加devtools依赖</h3>
+<div class="hlcode"><pre><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-devtools<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;optional&gt;</span>true<span class="nt">&lt;/optional&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+
+
+<h3 id="2-idea-build">2. IDEA 自动 build</h3>
+<p>File -&gt; Settings -&gt; Build, Execution, Deployment -&gt; Compiler</p>
+<p>选中 <code>Build project automatically</code></p>
+<p>Ctrl + Shift + A -&gt; <code>Registry</code></p>
+<p>选中 <code>compiler.automake.allow.when.app.running</code></p>
+<blockquote>
+<p><code>compiler.automake.trigger.delay</code> 可以设置 automake 的延迟</p>
+</blockquote>
+<h3 id="3">3. 模板引擎设置</h3>
+<p>freemarker 在 property 文件中配置 <code>spring.freemarker.cache=false</code></p>
+<p>其他模板引擎参考 <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/howto-hotswapping.html">Hot swapping</a></p>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/java/hikaricp-config.html">HikariCP 数据源常用配置</a></li>
+  
+    <li><a href="/java/maven-latest-version.html">Maven 依赖使用最新版本</a></li>
+  
+    <li><a href="/java/spring-logging.html">Spring 日志配置</a></li>
+  
+    <li><a href="/java/consul-for-spring-boot.html">Spring Boot 基于 consul 的服务发现于配置管理</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

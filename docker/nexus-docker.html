@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>nexus3 docker private registry - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#docker">docker</a>
+    &nbsp;&#187;&nbsp;nexus3 docker private registry
+    <span class="updated">Updated&nbsp;
+    2020-05-19 21:36:06
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <h2 id="nexus3">Nexus3 部署</h2>
+<p>docker-compose.yml：</p>
+<div class="hlcode"><pre><span class="nl">version:</span> <span class="s">&quot;3&quot;</span>
+
+<span class="nl">services:</span>
+  <span class="nl">nexus:</span>
+    <span class="nl">image:</span> <span class="n">sonatype</span><span class="o">/</span><span class="n">nexus3</span>
+    <span class="nl">container_name:</span> <span class="n">nexus3</span>
+    <span class="nl">volumes:</span>
+      <span class="o">-</span> <span class="s">&quot;/mnt/disk2/nexus3:/nexus-data&quot;</span>
+    <span class="nl">ports:</span>
+      <span class="o">-</span> <span class="s">&quot;8081:8081&quot;</span>
+      <span class="o">-</span> <span class="s">&quot;8082:8082&quot;</span>
+      <span class="o">-</span> <span class="s">&quot;8083:8083&quot;</span>
+</pre></div>
+
+
+<blockquote>
+<p>8081 nexus web端口<br />
+8082 docker group 端口，docker pull 等操作<br />
+8083 docker hosted 端口，docker push 等操作</p>
+</blockquote>
+<h2 id="nexus3_1">Nexus3 配置</h2>
+<h3 id="blob-store">创建 Blob store</h3>
+<p><em>Repository -&gt; Blob Stores</em><br />
+分别创建 proxy 跟 hosted 对应 Blob store</p>
+<h3 id="_1">创建仓库</h3>
+<p><em>Repository -&gt; Repositories</em></p>
+<h4 id="hosted">Hosted 仓库，私有仓库</h4>
+<ul>
+<li>启用 HTTP 8083 端口</li>
+<li>允许匿名pull</li>
+</ul>
+<h4 id="proxy-docker-hub">Proxy 仓库，代理 docker hub</h4>
+<ul>
+<li>允许匿名pull</li>
+<li>Remote Storgae： https://registry-1.docker.io</li>
+<li>Docker Index: Use Docker Hub</li>
+</ul>
+<h4 id="group">Group 仓库，聚合其他仓库</h4>
+<ul>
+<li>启用 HTTP 8082 端口</li>
+<li>允许匿名pull</li>
+<li>Group 选择上述创建的仓库</li>
+</ul>
+<h3 id="_2">权限配置</h3>
+<h4 id="realms">Realms</h4>
+<p><em>Security -&gt; Realms</em>，添加 <code>Docker Bearer Token Realm</code></p>
+<h4 id="_3">角色及用户</h4>
+<p>角色权限(所有仓库可读，hosted仓库可写)：<br />
+- nx-repository-view-docker-<em>-browse<br />
+- nx-repository-view-docker-</em>-read<br />
+- nx-repository-view-docker-docker-hosted-*</p>
+<p>创建用户并赋予角色</p>
+<h2 id="nginx">Nginx 配置</h2>
+<h3 id="nexus">Nexus 域名</h3>
+<p>普通反向代理配置，端口8081</p>
+<h3 id="registry">Registry 域名</h3>
+<div class="hlcode"><pre><span class="cp"># group 仓库端口</span>
+<span class="n">upstream</span> <span class="n">nexus</span><span class="o">-</span><span class="n">docker</span> <span class="p">{</span>
+    <span class="n">server</span> <span class="mf">10.64.90.162</span><span class="o">:</span><span class="mi">8082</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp"># hosted 仓库端口</span>
+<span class="n">upstream</span> <span class="n">nexus</span><span class="o">-</span><span class="n">docker</span><span class="o">-</span><span class="n">push</span> <span class="p">{</span>
+    <span class="n">server</span> <span class="mf">10.64.90.162</span><span class="o">:</span><span class="mi">8083</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">server</span> <span class="p">{</span>
+    <span class="p">...</span>
+
+    <span class="n">client_max_body_size</span> <span class="mi">1</span><span class="n">G</span><span class="p">;</span>
+
+    <span class="n">location</span> <span class="o">/</span> <span class="p">{</span>
+        <span class="p">...</span>
+
+        <span class="err">#</span> <span class="n">docker</span> <span class="n">login</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="err">$</span><span class="n">request_uri</span> <span class="o">~</span> <span class="s">&quot;/v2/token&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//nexus-docker-push;</span>
+        <span class="p">}</span>
+
+        <span class="err">#</span> <span class="n">docker</span> <span class="n">pull</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="err">$</span><span class="n">request_method</span> <span class="o">~</span> <span class="n">GET</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//nexus-docker;</span>
+        <span class="p">}</span>
+
+        <span class="err">#</span> <span class="n">other</span>
+        <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//nexus-docker-push;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/docker/docker-teamcity.html">Teamcity 配置</a></li>
+  
+    <li><a href="/docker/docker-dev-server.html">用docker配置开发环境服务</a></li>
+  
+    <li><a href="/docker/docker-basic-config.html">docker 基础配置</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

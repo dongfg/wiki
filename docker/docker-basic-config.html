@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>docker 基础配置 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#docker">docker</a>
+    &nbsp;&#187;&nbsp;docker 基础配置
+    <span class="updated">Updated&nbsp;
+    2017-04-27 14:17:39
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <h3 id="docker">安装 Docker</h3>
+<p>Docker 的 安装资源文件 存放在Amazon S3，会间歇性连接失败。所以安装Docker的时候，会比较慢。 你可以通过执行下面的命令，高速安装Docker。</p>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">sSL</span> <span class="n">https</span><span class="o">:</span><span class="c1">//get.daocloud.io/docker | sh</span>
+</pre></div>
+
+
+<h3 id="docker-compose">安装 Docker Compose</h3>
+<p>Docker Compose 存放在Git Hub，不太稳定。 <br />
+你可以也通过执行下面的命令，高速安装Docker Compose。</p>
+<div class="hlcode"><pre><span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="n">https</span><span class="o">:</span><span class="c1">//get.daocloud.io/docker/compose/releases/download/1.12.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose</span>
+<span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span>
+</pre></div>
+
+
+<p>你可以通过修改URL中的版本，可以自定义您的需要的版本。</p>
+<h3 id="docker_1">Docker加速器</h3>
+<p>针对Docker客户端版本大于1.10的用户<br />
+您可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器：</p>
+<div class="hlcode"><pre>sudo mkdir <span class="o">-</span>p <span class="o">/</span>etc<span class="o">/</span>docker
+sudo tee <span class="o">/</span>etc<span class="o">/</span>docker<span class="o">/</span>daemon.json <span class="o">&lt;&lt;-</span><span class="s">&#39;EOF&#39;</span>
+<span class="p">{</span>
+  <span class="s">&quot;registry-mirrors&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s">&quot;https://dn3uqhye.mirror.aliyuncs.com&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+EOF
+sudo systemctl daemon<span class="o">-</span>reload
+sudo systemctl restart docker
+</pre></div>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/docker/nexus-docker.html">nexus3 docker private registry</a></li>
+  
+    <li><a href="/docker/docker-teamcity.html">Teamcity 配置</a></li>
+  
+    <li><a href="/docker/docker-dev-server.html">用docker配置开发环境服务</a></li>
+  
+    <li><a href="/linux/debian-init.html">Debian 基本及安全设置</a></li>
+  
+    <li><a href="/linux/centos7-init.html">Centos7 初始化ansible脚本</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>Go VSCode配置 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#go">go</a>
+    &nbsp;&#187;&nbsp;Go VSCode配置
+    <span class="updated">Updated&nbsp;
+    2019-01-24 16:07:04
+    
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <h3 id="gopath">GOPATH 配置</h3>
+<div class="hlcode"><pre><span class="cp"># .zshrc</span>
+<span class="n">export</span> <span class="n">GOPATH</span><span class="o">=</span><span class="s">&quot;/Users/dongfg/Projects/Go&quot;</span>
+<span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PATH</span><span class="o">:</span><span class="err">$</span><span class="p">(</span><span class="n">go</span> <span class="n">env</span> <span class="n">GOPATH</span><span class="p">)</span><span class="o">/</span><span class="n">bin</span>
+</pre></div>
+
+
+<h3 id="go">安装Go插件</h3>
+<p><a href="vscode:extension/ms-vscode.Go">marketplace 安装</a><br />
+设置，搜索 <code>http: Proxy</code>，设置为 <code>http://127.0.0.1:1087</code></p>
+<h3 id="_1">安装依赖</h3>
+<p><code>cmd + shift + p -&gt; Install/Update Tools</code><br />
+全选安装</p>
+  
+  <div class="relation">
+    Related:
+    <ul>
+  
+    <li><a href="/go/go-tour.html">Go 指南</a></li>
+  
+    </ul>
+  </div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>

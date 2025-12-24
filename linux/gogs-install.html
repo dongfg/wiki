@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="Stylesheet" type="text/css" href="/static/css/colorful.css">
+    <link rel="Stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="alternate" type="application/atom+xml" href="atom.xml" title="Atom feed">
+    <title>gogs 二进制版安装配置 - dongfg' wiki</title>
+    <meta name="keywords" content="java, python, linux, docker, wiki, simiki"/>
+    <meta name="description" content="dongfg' personal wiki"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  </head>
+
+  <body>
+    <div id="container" class="typo">
+      
+<div id="header">
+  <div id="post-nav">
+    <a href="/">dongfg' wiki</a>
+    &nbsp;&#187;&nbsp;
+    <a href="/#linux">linux</a>
+    &nbsp;&#187;&nbsp;gogs 二进制版安装配置
+    <span class="updated">Updated&nbsp;
+    2018-01-27 12:02:00
+    </span>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div id="content">
+  <div class="toc"><span class="toctitle">Table of Contents</span><ul>
+<li><a href="#_1">依赖</a></li>
+<li><a href="#_2">安装</a><ul>
+<li><a href="#_3">解压</a></li>
+<li><a href="#repositories">创建 repositories 文件夹</a></li>
+<li><a href="#_4">启动进行初始化配置</a></li>
+<li><a href="#systemd">systemd 服务</a></li>
+<li><a href="#ssh">ssh 端口映射</a></li>
+<li><a href="#_5">备份及恢复</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<blockquote>
+<p><a href="https://gogs.io/docs/installation/install_from_binary">官方文档</a></p>
+</blockquote>
+<h2 id="_1">依赖</h2>
+<ul>
+<li>github 下载最新版本 <code>linux_amd64.tar.gz</code></li>
+<li>mysql 数据库</li>
+</ul>
+<h2 id="_2">安装</h2>
+<h3 id="_3">解压</h3>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">tar</span> <span class="o">-</span><span class="n">zxvf</span> <span class="n">linux_amd64</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">opt</span>
+</pre></div>
+
+
+<h3 id="repositories">创建 repositories 文件夹</h3>
+<div class="hlcode"><pre><span class="n">mdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">gogs</span><span class="o">/</span><span class="n">repositories</span>
+</pre></div>
+
+
+<h3 id="_4">启动进行初始化配置</h3>
+<div class="hlcode"><pre><span class="p">.</span><span class="o">/</span><span class="n">gogs</span> <span class="n">web</span>
+</pre></div>
+
+
+<p>注意运行用户及ssh 端口配置：<br />
+- 运行用户选择当前用户<br />
+- ssh 使用内置server 端口选择高于 1024 的端口 10022</p>
+<h3 id="systemd">systemd 服务</h3>
+<p><code>scripts/systemd/gogs.service</code> 编辑安装目录</p>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">cp</span> <span class="n">scripts</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">gogs</span><span class="p">.</span><span class="n">service</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span>
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">gogs</span>
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">start</span> <span class="n">gogs</span>
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">status</span> <span class="n">gogs</span>
+</pre></div>
+
+
+<h3 id="ssh">ssh 端口映射</h3>
+<div class="hlcode"><pre><span class="n">sudo</span> <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">permanent</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">forward</span><span class="o">-</span><span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="o">=</span><span class="mi">22</span><span class="o">:</span><span class="n">proto</span><span class="o">=</span><span class="n">tcp</span><span class="o">:</span><span class="n">toport</span><span class="o">=</span><span class="mi">10022</span>
+<span class="n">sudo</span> <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">reload</span>
+</pre></div>
+
+
+<p>端口配置修改：</p>
+<div class="hlcode"><pre><span class="k">[server]</span>
+<span class="na">SSH_PORT</span>         <span class="o">=</span> <span class="s">22</span>
+<span class="na">SSH_LISTEN_PORT</span>  <span class="o">=</span> <span class="s">10022</span>
+</pre></div>
+
+
+<h3 id="_5">备份及恢复</h3>
+<div class="hlcode"><pre><span class="p">.</span><span class="o">/</span><span class="n">gogs</span> <span class="n">backup</span>
+<span class="p">.</span><span class="o">/</span><span class="n">gogs</span> <span class="n">restore</span> <span class="o">--</span><span class="n">from</span><span class="o">=</span><span class="s">&quot;gogs-backup-xxx.zip&quot;</span>
+</pre></div>
+  
+</div>
+    </div>
+    <div id="footer">
+      <div class="footer-left">
+        <p>
+        Copyright © 2025 <a href='https://dongfg.com'>dongfg</a>.
+        Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
+        Theme by <a href="https://git.coding.net/tankywoo/yasimple_x2.git" target="_blank">YASimple_X2</a>.
+        </p>
+      </div> <!-- end footer-left -->
+      <div class="footer-right">
+        <p>Site Generated 2025-12-24 13:53:58</p>
+      </div> <!-- end footer-right -->
+    </div>
+
+    
+    
+  </body>
+</html>
